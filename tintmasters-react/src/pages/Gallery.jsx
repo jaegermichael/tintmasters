@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import PageHero from '../components/ui/PageHero';
 import { galleryItems } from '../data/constants';
 
@@ -40,7 +41,7 @@ export default function Gallery() {
   };
 
   return (
-    <>
+    <main id="content">
       <PageHero
         kicker="Project gallery"
         title="A closer look at the work."
@@ -57,19 +58,26 @@ export default function Gallery() {
             <button className={`filter ${filter === 'security' ? 'active' : ''}`} onClick={() => setFilter('security')}>Security</button>
           </div>
 
-          <div className="gallery-grid">
-            {filteredItems.map(([category, label, src], i) => (
-              <button
-                key={i}
-                className="gallery-card"
-                data-category={category}
-                onClick={() => openDialog(src, label)}
-              >
-                <img src={src} alt={label} loading="lazy" />
-                <span>{label}</span>
-              </button>
-            ))}
-          </div>
+          <motion.div layout className="gallery-grid">
+            <AnimatePresence mode="popLayout">
+              {filteredItems.map(([category, label, src]) => (
+                <motion.button
+                  key={`${category}-${label}-${src}`}
+                  layout
+                  initial={{ opacity: 0, scale: 0.92 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.92 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="gallery-card"
+                  data-category={category}
+                  onClick={() => openDialog(src, label)}
+                >
+                  <img src={src} alt={label} loading="lazy" />
+                  <span>{label}</span>
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </div>
       </section>
 
@@ -85,6 +93,6 @@ export default function Gallery() {
         <button aria-label="Close image" onClick={() => setDialogOpen(false)}>×</button>
         {dialogImage.src && <img src={dialogImage.src} alt={dialogImage.alt} />}
       </dialog>
-    </>
+    </main>
   );
 }

@@ -1,9 +1,10 @@
 import PageHero from '../components/ui/PageHero';
+import Reveal from '../components/ui/Reveal';
 import { serviceData } from '../data/constants';
 
 export default function Services() {
   return (
-    <>
+    <main id="content">
       <PageHero
         kicker="Our services"
         title="The right finish for the way you work."
@@ -11,8 +12,8 @@ export default function Services() {
       />
       <section className="section">
         <div className="shell">
-          {serviceData.map(([title, text, image]) => (
-            <article key={title} className="service-detail">
+          {serviceData.map(([title, text, image], i) => (
+            <Reveal as="article" key={title} delay={i === 0 ? 0 : 0.05} className="service-detail">
               <img src={image} alt={title} loading="lazy" />
               <div>
                 <p className="eyebrow">Tint Masters service</p>
@@ -22,10 +23,10 @@ export default function Services() {
                   Ask about this service
                 </a>
               </div>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>
-    </>
+    </main>
   );
 }

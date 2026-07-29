@@ -45,7 +45,7 @@ export default function Contact() {
   };
 
   return (
-    <>
+    <main id="content">
       <PageHero
         kicker="Contact Tint Masters"
         title="Let's talk about the job."
@@ -114,6 +114,6 @@ export default function Contact() {
           </form>
         </div>
       </section>
-    </>
+    </main>
   );
 }
