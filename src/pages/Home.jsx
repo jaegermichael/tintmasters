@@ -20,6 +20,21 @@ export default function Home() {
   const tintStageRef = useRef(null);
   const [showVideo, setShowVideo] = useState(true);
   const [ready, setReady] = useState(false);
+  const mountTimeRef = useRef(Date.now());
+
+  // Keep the loading curtain visible for at least this long so it reads as
+  // an intentional effect, even when the video loads almost instantly on a
+  // fast connection.
+  const MIN_LOADER_MS = 1400;
+  const revealPage = () => {
+    const elapsed = Date.now() - mountTimeRef.current;
+    const remaining = MIN_LOADER_MS - elapsed;
+    if (remaining > 0) {
+      setTimeout(() => setReady(true), remaining);
+    } else {
+      setReady(true);
+    }
+  };
 
   useEffect(() => {
     if (tintStageRef.current) {
@@ -62,8 +77,8 @@ export default function Home() {
             muted
             loop
             playsInline
-            onLoadedData={() => setReady(true)}
-            onError={() => setReady(true)}
+            onLoadedData={revealPage}
+            onError={revealPage}
             aria-hidden="true"
           />
         )}
