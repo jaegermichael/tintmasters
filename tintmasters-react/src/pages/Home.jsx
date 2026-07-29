@@ -5,6 +5,7 @@ import { images, serviceCards, phone, tel } from '../data/constants';
 export default function Home() {
   const [reveal, setReveal] = useState(57);
   const tintStageRef = useRef(null);
+  const [showVideo, setShowVideo] = useState(true);
 
   useEffect(() => {
     if (tintStageRef.current) {
@@ -12,9 +13,31 @@ export default function Home() {
     }
   }, [reveal]);
 
+  useEffect(() => {
+    // Respect the visitor's reduced-motion preference by keeping the
+    // static poster image instead of autoplaying the background video.
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setShowVideo(!query.matches);
+    const handleChange = (e) => setShowVideo(!e.matches);
+    query.addEventListener('change', handleChange);
+    return () => query.removeEventListener('change', handleChange);
+  }, []);
+
   return (
     <main id="content">
       <section className="hero">
+        {showVideo && (
+          <video
+            className="hero-video"
+            src="/videos/hero.mp4"
+            poster="/images/hero-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+          />
+        )}
         <div className="shell hero-grid">
           <div className="reveal">
             <p className="eyebrow">Tinting. Branding. Security.</p>
