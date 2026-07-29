@@ -18,6 +18,24 @@ export default function Home() {
   const [reveal, setReveal] = useState(57);
   const tintStageRef = useRef(null);
   const [showVideo, setShowVideo] = useState(true);
+  const videoRef = useRef(null);
+
+  // Skip the first 2s of the clip on load, and loop from 2s onward
+  // (rather than replaying the intro every time it loops).
+  const SKIP_SECONDS = 2;
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = SKIP_SECONDS;
+    }
+  };
+
+  const handleEnded = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = SKIP_SECONDS;
+      videoRef.current.play();
+    }
+  };
 
   useEffect(() => {
     if (tintStageRef.current) {
@@ -40,13 +58,15 @@ export default function Home() {
       <section className="hero">
         {showVideo && (
           <video
+            ref={videoRef}
             className="hero-video"
             src="/videos/hero.mp4"
             poster="/images/hero-poster.jpg"
             autoPlay
             muted
-            loop
             playsInline
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleEnded}
             aria-hidden="true"
           />
         )}
