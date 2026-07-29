@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { images, serviceCards, phone, tel } from '../data/constants';
 import Reveal from '../components/ui/Reveal';
+import Loader from '../components/ui/Loader';
 
 const heroContainer = {
   hidden: {},
@@ -18,6 +19,7 @@ export default function Home() {
   const [reveal, setReveal] = useState(57);
   const tintStageRef = useRef(null);
   const [showVideo, setShowVideo] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (tintStageRef.current) {
@@ -26,17 +28,30 @@ export default function Home() {
   }, [reveal]);
 
   useEffect(() => {
+    // Safety net: reveal the page even if the video stalls, fails to load,
+    // or the browser blocks autoplay (slow connection, data saver, etc.).
+    const timeout = setTimeout(() => setReady(true), 3500);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
     // Respect the visitor's reduced-motion preference by keeping the
     // static poster image instead of autoplaying the background video.
+    // With no video to wait for, the loading curtain can open immediately.
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setShowVideo(!query.matches);
-    const handleChange = (e) => setShowVideo(!e.matches);
+    const applyPreference = (matches) => {
+      setShowVideo(!matches);
+      if (matches) setReady(true);
+    };
+    applyPreference(query.matches);
+    const handleChange = (e) => applyPreference(e.matches);
     query.addEventListener('change', handleChange);
     return () => query.removeEventListener('change', handleChange);
   }, []);
 
   return (
     <main id="content">
+      <AnimatePresence>{!ready && <Loader key="loader" />}</AnimatePresence>
       <section className="hero">
         {showVideo && (
           <video
@@ -47,6 +62,8 @@ export default function Home() {
             muted
             loop
             playsInline
+            onLoadedData={() => setReady(true)}
+            onError={() => setReady(true)}
             aria-hidden="true"
           />
         )}
