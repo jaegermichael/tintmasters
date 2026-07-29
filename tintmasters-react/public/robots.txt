@@ -1,1 +1,4 @@
-PLACEHOLDER
+User-agent: *
+Allow: /
+
+Sitemap: https://tintmasters.co.zw/sitemap.xml
