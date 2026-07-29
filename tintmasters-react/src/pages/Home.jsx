@@ -1,28 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
-
-const images = {
-  tint: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/Tint-masters-tinting-.jpg',
-  frost: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0091.jpg',
-  building: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0080.jpg',
-  gate: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/m100-2-sliding-gate-opener-1000x1000-1.jpg',
-  signage: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/drew-beamer-bSEyq0LR2mk-unsplash-scaled.jpg',
-  wrap: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250409-WA0121.jpg',
-  team: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0099.jpg',
-  founder: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250409-WA0118.jpg'
-};
-
-const phone = '+263 78 422 7110';
-const tel = '+263784227110';
-
-const serviceCards = [
-  ['Automotive tinting', 'Ceramic tint options for comfort, privacy and a refined finish.', images.tint],
-  ['Window frosting', 'Privacy that still lets the light work.', images.frost],
-  ['Building tinting', 'Residential and commercial window solutions.', images.building],
-  ['Gates and CCTV', 'Stronger access control for the spaces that matter.', images.gate],
-  ['Signage', 'Clear, practical signs that do their job.', images.signage],
-  ['Vehicle branding', 'Put your business in motion.', images.wrap]
-];
+import { images, serviceCards, phone, tel } from '../data/constants';
 
 export default function Home() {
   const [reveal, setReveal] = useState(57);

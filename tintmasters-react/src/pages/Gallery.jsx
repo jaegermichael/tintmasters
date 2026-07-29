@@ -8,13 +8,27 @@ export default function Gallery() {
   const [dialogImage, setDialogImage] = useState({ src: '', alt: '' });
   const dialogRef = useRef(null);
 
+  // The dialog stays mounted in the DOM at all times so the native
+  // showModal()/close() API and Escape-to-close behaviour work correctly.
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && dialogOpen) setDialogOpen(false);
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    const dialogEl = dialogRef.current;
+    if (!dialogEl) return;
+    if (dialogOpen && !dialogEl.open) {
+      dialogEl.showModal();
+    } else if (!dialogOpen && dialogEl.open) {
+      dialogEl.close();
+    }
   }, [dialogOpen]);
+
+  useEffect(() => {
+    const dialogEl = dialogRef.current;
+    if (!dialogEl) return;
+    // Keeps React state in sync when the dialog is closed natively
+    // (Escape key or the browser's built-in <dialog> handling).
+    const handleClose = () => setDialogOpen(false);
+    dialogEl.addEventListener('close', handleClose);
+    return () => dialogEl.removeEventListener('close', handleClose);
+  }, []);
 
   const filteredItems = filter === 'all'
     ? galleryItems
@@ -59,12 +73,18 @@ export default function Gallery() {
         </div>
       </section>
 
-      {dialogOpen && (
-        <dialog className="dialog" ref={dialogRef} onClick={(e) => e.target === dialogRef && setDialogOpen(false)}>
-          <button aria-label="Close image" onClick={() => setDialogOpen(false)}>×</button>
-          <img src={dialogImage.src} alt={dialogImage.alt} />
-        </dialog>
-      )}
+      <dialog
+        className="dialog"
+        ref={dialogRef}
+        onClick={(e) => {
+          // Clicking the backdrop (the <dialog> element itself, not its
+          // content) closes it.
+          if (e.target === dialogRef.current) setDialogOpen(false);
+        }}
+      >
+        <button aria-label="Close image" onClick={() => setDialogOpen(false)}>×</button>
+        {dialogImage.src && <img src={dialogImage.src} alt={dialogImage.alt} />}
+      </dialog>
     </>
   );
 }

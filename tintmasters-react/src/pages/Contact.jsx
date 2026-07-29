@@ -21,6 +21,25 @@ export default function Contact() {
       form.reportValidity();
       return;
     }
+
+    const data = new FormData(form);
+    const lines = [
+      `Name: ${data.get('name')}`,
+      `Phone: ${data.get('phone')}`,
+      `Email: ${data.get('email')}`,
+      `Service: ${data.get('service') || 'Not specified'}`,
+      '',
+      data.get('message')
+    ];
+
+    // No backend is wired up yet, so route the enquiry through the visitor's
+    // own email client as a functional fallback. To collect leads directly
+    // (e.g. into a CRM or inbox without opening a mail client), connect a
+    // form backend such as Formspree/Web3Forms and post `data` to it here.
+    const subject = encodeURIComponent(`Website enquiry: ${data.get('service') || 'General'}`);
+    const body = encodeURIComponent(lines.join('\n'));
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
     setShowMessage(true);
     form.reset();
   };
@@ -90,7 +109,7 @@ export default function Contact() {
             </div>
             <button className="button button-primary" type="submit">Send enquiry</button>
             <p className={`form-message ${showMessage ? 'show' : ''}`} role="status">
-              Thanks. Your enquiry is ready to send. A live site can connect this form to your email or CRM.
+              Thanks. Your email app should now be open with your enquiry pre-filled — just hit send.
             </p>
           </form>
         </div>

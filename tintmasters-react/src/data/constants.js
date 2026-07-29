@@ -2,15 +2,17 @@ export const phone = '+263 78 422 7110';
 export const tel = '+263784227110';
 export const email = 'sales@tintmasters.co.zw';
 
+// Images are self-hosted from /public/images so the site no longer depends on
+// the live WordPress site staying online (previously these were hotlinked).
 export const images = {
-  tint: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/Tint-masters-tinting-.jpg',
-  frost: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0091.jpg',
-  building: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0080.jpg',
-  gate: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/m100-2-sliding-gate-opener-1000x1000-1.jpg',
-  signage: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/drew-beamer-bSEyq0LR2mk-unsplash-scaled.jpg',
-  wrap: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250409-WA0121.jpg',
-  founder: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250409-WA0118.jpg',
-  team: 'https://tintmasters.co.zw/wp-content/uploads/2025/04/IMG-20250408-WA0099.jpg'
+  tint: '/images/tint.jpg',
+  frost: '/images/frost.jpg',
+  building: '/images/building.jpg',
+  gate: '/images/gate.jpg',
+  signage: '/images/signage.jpg',
+  wrap: '/images/wrap.jpg',
+  founder: '/images/founder.jpg',
+  team: '/images/team.jpg'
 };
 
 export const serviceCards = [
