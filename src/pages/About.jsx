@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import PageHero from '../components/ui/PageHero';
 import Reveal from '../components/ui/Reveal';
-import { images, values } from '../data/constants';
+import { images, values, tel } from '../data/constants';
 
 export default function About() {
   return (
@@ -9,23 +9,30 @@ export default function About() {
       <PageHero
         kicker="About Tint Masters"
         title="Work you can see. Standards you can trust."
-        copy="We bring tinting, branding and security under one roof, with a practical approach and careful finish."
+        copy="We bring tinting, branding and security under one roof — with a practical approach and a careful finish built for Harare."
       />
 
       <section className="section section-fog">
         <div className="shell intro-grid">
           <Reveal delay={0.05} className="intro-copy">
             <p className="eyebrow">Our approach</p>
-            <h2>We solve the practical part, then refine the visible part.</h2>
+            <h2>Solve the practical part. Then refine the visible part.</h2>
             <p>
-              Tint Masters Zimbabwe works with vehicle owners, homeowners and businesses that want a better result
-              from the surfaces they use every day.
+              Tint Masters Zimbabwe works with vehicle owners, homeowners and businesses that want a
+              better result from the surfaces they use every day.
             </p>
             <p>
-              That could be cooler cabin temperatures, a private meeting room, a branded fleet or a more secure entrance.
-              The material and installation method change, but the standard stays the same.
+              That could be cooler cabin temperatures, a private meeting room, a branded fleet or a
+              more secure entrance. The material changes — the standard does not.
             </p>
-            <Link className="button button-primary" to="/contact">Talk to our team</Link>
+            <div className="hero-actions" style={{ marginTop: '.35rem' }}>
+              <Link className="button button-primary" to="/contact">
+                Talk to our team
+              </Link>
+              <a className="button button-outline" href={`tel:${tel}`}>
+                Call us
+              </a>
+            </div>
           </Reveal>
           <Reveal className="about-visual">
             <img src={images.team} alt="Tint Masters project work" />
@@ -43,7 +50,9 @@ export default function About() {
           <div className="values">
             {values.map(({ num, label, title, desc }, i) => (
               <Reveal as="article" key={title} delay={Math.min(i * 0.08, 0.3)} y={16} className="value">
-                <b>{num} {label}</b>
+                <b>
+                  {num} / {label}
+                </b>
                 <h3>{title}</h3>
                 <p>{desc}</p>
               </Reveal>
@@ -54,8 +63,15 @@ export default function About() {
 
       <Reveal as="section" className="cta-band">
         <div className="shell">
-          <h2>Ready to improve your space?</h2>
-          <Link className="button" to="/contact">Request a quote</Link>
+          <div>
+            <h2>Ready to improve your space?</h2>
+            <p>From first call to final edge — we keep the process simple and the finish sharp.</p>
+          </div>
+          <div className="cta-actions">
+            <Link className="button button-primary" to="/contact">
+              Request a quote
+            </Link>
+          </div>
         </div>
       </Reveal>
     </main>

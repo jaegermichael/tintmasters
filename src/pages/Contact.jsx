@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PageHero from '../components/ui/PageHero';
-import { phone, tel, email, serviceData } from '../data/constants';
+import { phone, tel, email, serviceData, address } from '../data/constants';
 
 export default function Contact() {
   const [showMessage, setShowMessage] = useState(false);
@@ -49,7 +49,7 @@ export default function Contact() {
       <PageHero
         kicker="Contact Tint Masters"
         title="Let's talk about the job."
-        copy="Call, email or send a short brief. The more context you share, the more useful our recommendation can be."
+        copy="Call, email or send a short brief. The more context you share, the sharper our recommendation."
       />
 
       <section className="section section-fog">
@@ -59,7 +59,7 @@ export default function Contact() {
             <h2>Start with a conversation.</h2>
             <div className="contact-points">
               <div>
-                <small>Call</small>
+                <small>Call / WhatsApp ready</small>
                 <a href={`tel:${tel}`}>{phone}</a>
               </div>
               <div>
@@ -68,9 +68,12 @@ export default function Contact() {
               </div>
               <div>
                 <small>Location</small>
-                <p>15223 10th Close<br />Sunningdale 2, Harare, Zimbabwe</p>
+                <p>{address}</p>
               </div>
             </div>
+            <a className="button button-blue" href={`tel:${tel}`}>
+              Call now
+            </a>
           </section>
 
           <form ref={formRef} className="contact-form" onSubmit={handleSubmit} noValidate>
@@ -81,7 +84,7 @@ export default function Contact() {
               </div>
               <div className="field">
                 <label htmlFor="phone">Phone number</label>
-                <input id="phone" name="phone" required autoComplete="tel" />
+                <input id="phone" name="phone" required autoComplete="tel" inputMode="tel" />
               </div>
             </div>
             <div className="field">
@@ -93,7 +96,9 @@ export default function Contact() {
               <select id="service" name="service">
                 <option value="">Select a service</option>
                 {serviceData.map(([title]) => (
-                  <option key={title} value={title}>{title}</option>
+                  <option key={title} value={title}>
+                    {title}
+                  </option>
                 ))}
               </select>
             </div>
@@ -107,7 +112,9 @@ export default function Contact() {
                 placeholder="Vehicle type, location, approximate scope or timing"
               />
             </div>
-            <button className="button button-primary" type="submit">Send enquiry</button>
+            <button className="button button-primary" type="submit">
+              Send enquiry
+            </button>
             <p className={`form-message ${showMessage ? 'show' : ''}`} role="status">
               Thanks. Your email app should now be open with your enquiry pre-filled — just hit send.
             </p>
