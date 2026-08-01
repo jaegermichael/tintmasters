@@ -1,7 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import PageHero from '../components/ui/PageHero';
 import { galleryItems } from '../data/constants';
+
+const filters = [
+  ['all', 'All work'],
+  ['tint', 'Tinting'],
+  ['building', 'Property'],
+  ['branding', 'Branding'],
+  ['security', 'Security']
+];
 
 export default function Gallery() {
   const [filter, setFilter] = useState('all');
@@ -31,9 +39,8 @@ export default function Gallery() {
     return () => dialogEl.removeEventListener('close', handleClose);
   }, []);
 
-  const filteredItems = filter === 'all'
-    ? galleryItems
-    : galleryItems.filter(([category]) => category === filter);
+  const filteredItems =
+    filter === 'all' ? galleryItems : galleryItems.filter(([category]) => category === filter);
 
   const openDialog = (src, alt) => {
     setDialogImage({ src, alt });
@@ -51,11 +58,15 @@ export default function Gallery() {
       <section className="section section-fog">
         <div className="shell">
           <div className="gallery-controls" aria-label="Filter gallery">
-            <button className={`filter ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All work</button>
-            <button className={`filter ${filter === 'tint' ? 'active' : ''}`} onClick={() => setFilter('tint')}>Tinting</button>
-            <button className={`filter ${filter === 'building' ? 'active' : ''}`} onClick={() => setFilter('building')}>Property</button>
-            <button className={`filter ${filter === 'branding' ? 'active' : ''}`} onClick={() => setFilter('branding')}>Branding</button>
-            <button className={`filter ${filter === 'security' ? 'active' : ''}`} onClick={() => setFilter('security')}>Security</button>
+            {filters.map(([id, label]) => (
+              <button
+                key={id}
+                className={`filter ${filter === id ? 'active' : ''}`}
+                onClick={() => setFilter(id)}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           <motion.div layout className="gallery-grid">
@@ -64,9 +75,9 @@ export default function Gallery() {
                 <motion.button
                   key={`${category}-${label}-${src}`}
                   layout
-                  initial={{ opacity: 0, scale: 0.92 }}
+                  initial={{ opacity: 0, scale: 0.94 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
+                  exit={{ opacity: 0, scale: 0.94 }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                   className="gallery-card"
                   data-category={category}
@@ -90,7 +101,9 @@ export default function Gallery() {
           if (e.target === dialogRef.current) setDialogOpen(false);
         }}
       >
-        <button aria-label="Close image" onClick={() => setDialogOpen(false)}>×</button>
+        <button aria-label="Close image" onClick={() => setDialogOpen(false)}>
+          ×
+        </button>
         {dialogImage.src && <img src={dialogImage.src} alt={dialogImage.alt} />}
       </dialog>
     </main>
